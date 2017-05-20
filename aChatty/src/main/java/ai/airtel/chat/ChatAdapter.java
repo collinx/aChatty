@@ -48,6 +48,7 @@ public class ChatAdapter   extends ArrayAdapter<ChatMessage> {
                 break;
             case 2:
                 row = inflater.inflate(R.layout.right, parent, false);
+
                 break;
         }
         chatText = (TextView) row.findViewById(R.id.msgr);

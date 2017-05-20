@@ -10,12 +10,14 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ai.api.AIServiceException;
@@ -33,13 +35,13 @@ import ai.api.ui.AIButton;
 
 public class chatC extends BaseActivity implements AIButton.AIButtonListener {
 
-
+    public static DatabaseHelper dbHelper;
     private ChatAdapter chatArrayAdapter;
     private ListView listView;
     public EditText chatText;
     private Button buttonSend;
     private AIDataService aiDataService;
-
+    private ImageView clearView;
     public static final String TAG = chatC.class.getName();
 
     private AIButton aiButton;
@@ -50,12 +52,13 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_c);
+        dbHelper= new DatabaseHelper(this);
 
         TTS.init(getApplicationContext());
         initService( new LanguageConfig("en", "a11ea1d839e3446d84e402cb97cdadfb"));
         aiButton = (AIButton) findViewById(R.id.micButtonHome);
         buttonSend = (Button) findViewById(R.id.send);
-
+        clearView = (ImageView)findViewById(R.id.sends);
         listView = (ListView) findViewById(R.id.msgview);
 
         chatArrayAdapter = new ChatAdapter(this, R.layout.right);
@@ -76,7 +79,15 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
                 sendChatMessage();
             }
         });
-
+        clearView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.deleteDB(getApplicationContext());
+                finish();
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+            }
+        });
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         listView.setAdapter(chatArrayAdapter);
 
@@ -98,6 +109,12 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
 
         aiButton.initialize(config);
         aiButton.setResultsListener(this);
+        List<ChatMessage> msg = dbHelper.getMessage();
+        if(msg!=null){
+            for(int i=0;i<msg.size();i++){
+                chatArrayAdapter.add(msg.get(i));
+            }
+        }
     }
     private void initService(final LanguageConfig selectedLanguage) {
         final AIConfiguration.SupportedLanguages lang = AIConfiguration.SupportedLanguages.fromLanguageTag(selectedLanguage.getLanguageCode());
@@ -117,6 +134,7 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
     public boolean sendChatMessage() {
         if(!TextUtils.isEmpty(chatText.getText())){
             sendRequest();
+            dbHelper.addMessage(2,chatText.getText().toString());
             chatArrayAdapter.add(new ChatMessage(2, chatText.getText().toString()));
             chatText.setText("");
 
@@ -193,6 +211,8 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
                 Log.d(TAG, "onResult");
                 chatArrayAdapter.add(new ChatMessage(2,response.getResult().getResolvedQuery()));
                 chatArrayAdapter.add(new ChatMessage(1, response.getResult().getFulfillment().getSpeech()));
+                dbHelper.addMessage(2,response.getResult().getResolvedQuery());
+                dbHelper.addMessage(1,response.getResult().getFulfillment().getSpeech());
                 Log.i(TAG, "Received success response");
 
                 // this is example how to get different parts of result object
@@ -224,7 +244,9 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
 
                 if(response.getResult().getAction().equals("input.unknown")){
                     chatArrayAdapter.add(new ChatMessage(0, "Get Balance"));
-                    chatArrayAdapter.add(new ChatMessage(0, "Get Tariff Detail"));
+                    chatArrayAdapter.add(new ChatMessage(0, "Create Service Request"));
+                    chatArrayAdapter.add(new ChatMessage(0, "Check Service Request Status"));
+                    chatArrayAdapter.add(new ChatMessage(0, "About Airtel"));
                 }
             }
 
@@ -239,6 +261,7 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
 
                 Log.d(TAG, "onResult");
                 chatArrayAdapter.add(new ChatMessage(1, response.getResult().getFulfillment().getSpeech()));
+                dbHelper.addMessage(1,response.getResult().getFulfillment().getSpeech());
                 Log.i(TAG, "Received success response");
 
                 // this is example how to get different parts of result object
@@ -270,7 +293,10 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
 
                 if(response.getResult().getAction().equals("input.unknown")){
                     chatArrayAdapter.add(new ChatMessage(0, "Get Balance"));
-                    chatArrayAdapter.add(new ChatMessage(0, "Get Tariff Detail"));
+                    chatArrayAdapter.add(new ChatMessage(0, "Create Service Request"));
+                    chatArrayAdapter.add(new ChatMessage(0, "Check Service Request Status"));
+                    chatArrayAdapter.add(new ChatMessage(0, "About Airtel"));
+
                 }
 
             }
