@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -84,6 +85,7 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
             public void onClick(View v) {
                 dbHelper.deleteDB(getApplicationContext());
                 finish();
+                Toast.makeText(getApplicationContext(),"History Cleared!!",Toast.LENGTH_SHORT).show();
                 startActivity(getIntent());
                 overridePendingTransition(0, 0);
             }
