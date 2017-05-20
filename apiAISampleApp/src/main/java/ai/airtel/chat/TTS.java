@@ -1,6 +1,7 @@
 package ai.airtel.chat;
 
 import android.content.Context;
+import android.os.Build;
 import android.speech.tts.TextToSpeech;
 
 /***********************************************************************************************************************
@@ -40,6 +41,10 @@ public class TTS {
     }
 
     public static void speak(final String text) {
-        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(text,TextToSpeech.QUEUE_FLUSH,null,null);
+        } else {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 }

@@ -10,74 +10,66 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
-        android:name="ai.airtel.chat.AIApplication"
+        android:name=".AIApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="ai.airtel.chat.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
-
         <activity
-            android:name="ai.airtel.chat.AIButtonSampleActivity"
+            android:name=".AIButtonSampleActivity"
             android:label="@string/title_activity_aibutton_sample"
-            android:parentActivityName="ai.airtel.chat.MainActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ai.airtel.chat.MainActivity" />
         </activity>
-
         <activity
-            android:name="ai.airtel.chat.AIServiceSampleActivity"
+            android:name=".AIServiceSampleActivity"
             android:label="@string/title_activity_aiservice_sample"
-            android:parentActivityName="ai.airtel.chat.MainActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ai.airtel.chat.MainActivity" />
         </activity>
-
         <activity
-            android:name="ai.airtel.chat.AIDialogSampleActivity"
+            android:name=".AIDialogSampleActivity"
             android:label="@string/title_activity_aidialog_sample"
-            android:parentActivityName="ai.airtel.chat.MainActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ai.airtel.chat.MainActivity" />
         </activity>
-
         <activity
-            android:name="ai.airtel.chat.AISettingsActivity"
+            android:name=".AISettingsActivity"
             android:label="@string/action_settings"
-            android:parentActivityName="ai.airtel.chat.MainActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ai.airtel.chat.MainActivity" />
         </activity>
-            
         <activity
-            android:name="ai.airtel.chat.AIWidgetActivity"
+            android:name=".AIWidgetActivity"
             android:label="@string/app_name"
-            android:theme="@style/Base.Theme.AppCompat.Dialog">
-
-        </activity>
-
+            android:theme="@style/Base.Theme.AppCompat.Dialog"></activity>
         <activity
-            android:name="ai.airtel.chat.AITextSampleActivity"
+            android:name=".AITextSampleActivity"
             android:label="@string/title_activity_aitext_sample"
-            android:parentActivityName="ai.airtel.chat.MainActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ai.airtel.chat.MainActivity" />
         </activity>
 
-        <receiver android:name="ai.airtel.chat.AISampleAppWidget" >
+        <receiver android:name=".AISampleAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -87,6 +79,13 @@
                 android:resource="@xml/ai_app_widget_info" />
         </receiver>
 
+        <activity android:name=".chatC">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
