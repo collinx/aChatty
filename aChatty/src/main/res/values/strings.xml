@@ -3,4 +3,9 @@
 
     <string name="app_name">aChatty</string>
 
+    <string name="type_prompt">Choose a Type</string>
+    <string-array name="type_array">
+        <item>Prepaid</item>
+        <item>Postpaid</item>
+    </string-array>
 </resources>

@@ -1,5 +1,6 @@
 package ai.airtel.chat;
 
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
     private Button buttonSend;
     private AIDataService aiDataService;
     private ImageView clearView;
+    private ImageView addMobile;
     public static final String TAG = chatC.class.getName();
 
     private AIButton aiButton;
@@ -61,7 +63,7 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
         buttonSend = (Button) findViewById(R.id.send);
         clearView = (ImageView)findViewById(R.id.sends);
         listView = (ListView) findViewById(R.id.msgview);
-
+        addMobile = (ImageView) findViewById(R.id.addNew);
         chatArrayAdapter = new ChatAdapter(this, R.layout.right);
         listView.setAdapter(chatArrayAdapter);
 
@@ -90,6 +92,20 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
                 overridePendingTransition(0, 0);
             }
         });
+        addMobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               Intent intent = new Intent(v.getContext(), Mobi.class);
+                startActivity(intent);
+
+
+
+            }
+
+
+        });
+
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         listView.setAdapter(chatArrayAdapter);
 
@@ -203,6 +219,8 @@ public class chatC extends BaseActivity implements AIButton.AIButtonListener {
 
         task.execute(chatText.getText().toString());
     }
+
+
 
     @Override
     public void onResult(final AIResponse response) {
